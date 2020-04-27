@@ -19,9 +19,9 @@ public class ClassManager : MonoBehaviour
         mago.prefab = magoPrefab;
         berserker.prefab = berserkerPrefab;
     }
+	//VAMOS COMENTAR ESSE CÓDIGO!!!
     public void CriarClasse(ClasseBase classe)
     {
-        PlayerScript.singleton.classe = classe;
-        
+        PlayerScript.singleton.classe = classe;        
     }
 }
