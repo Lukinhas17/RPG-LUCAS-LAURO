@@ -22,8 +22,8 @@ public class Ninja : ClasseBase
     }
     public int Especial()
     {
-        vida += 55;
-        int forcaE = forca + 40;
+        vida += 60;
+        int forcaE = forca + 35;
         Debug.Log("VIDA RECUPERADA " + vida);
         especial = false;
         return forcaE;
