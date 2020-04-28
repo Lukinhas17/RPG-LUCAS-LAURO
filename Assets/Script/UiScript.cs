@@ -6,6 +6,7 @@ public class UiScript : MonoBehaviour
     public InputField nomeInput;//recebe o nome digitado pelo player
     private bool escolher = false;//escolha da class do player
     public ClassManager classeManager;
+    public static int playerClass;
 
     public void GetName() //pega o nome digitado 
     {
@@ -15,17 +16,21 @@ public class UiScript : MonoBehaviour
 
     public void BottonClass(int op)
     {
+       
         if (op == 1)
         {
             classeManager.CriarClasse(classeManager.ninja);
+            playerClass = op;
         }
         else if (op == 2)
         {
             classeManager.CriarClasse(classeManager.mago);
+            playerClass = op;
         }
         else
         {
             classeManager.CriarClasse(classeManager.berserker);
+            playerClass = op;
         }
 
         escolher = true;

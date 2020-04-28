@@ -39,23 +39,32 @@ public class Ninja : ClasseBase
         int forcaE = forca + 40;
         Debug.Log("VIDA RECUPERADA " + vida);
         return forcaE;
+
     }
     public override void EspecialF(ClasseBase inimigo)
     {
+        Debug.Log("ESPECIAL 4 LAMINAS MORTAIS");
         int dano;
         dano = Especial();
         inimigo.vida -= dano;
+        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO");//COLOCAR UMA COROTINA
+        inimigo.vida -= 20;
+        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO" + inimigo.vida);
+        inimigo.vida -= 20;
+        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO" + inimigo.vida);
+        inimigo.vida -= 20;
+        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO" + inimigo.vida);
+       
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
+        Debug.Log("TENTE ME ACERTAR");
         return Roll(inimigo);
     }
-
     public override bool Roll(ClasseBase inimigo)
     {
         return base.Roll(inimigo);
     }
-
 }
 
 public class Berserker : ClasseBase
@@ -69,15 +78,22 @@ public class Berserker : ClasseBase
 
     public override bool EspecialB(ClasseBase inimigo)
     {
-        vida += 50;
-        forca += 10;
-        defesa += 20;
-        Debug.Log("ESPECIAL DO BERSERKER");
-        return true;
+        Debug.Log("MODO BERSERKER ATIVADO");
+        Debug.Log("DEUS ACIMA DE TODOS BESERKER ACIMA DE TUDOO HA HA HAA");
+        vida = 300;
+        forca = 70;
+        defesa = 70;
+        Debug.LogError("ATRIBUTOS ALTOS");
+        return false;
     }
     public override void EspecialF(ClasseBase inimigo)
     {
-        throw new System.NotImplementedException();
+        int dano;
+        Debug.Log("SINTA O PESO DO MARTELOOO");//COLOCAR UMA COROTINA
+        dano = forca += forca * 3;
+        inimigo.vida -= dano;
+        Debug.Log("INIMIGO TOMOU UM ATAQUE DE E FICOU COM A VIDA " + inimigo.vida);//COLOCAR UMA COROTINA
+       
     }
 }
 
@@ -91,11 +107,13 @@ public class Mago : ClasseBase
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("ORBE DE GELO FIQUE PARADO POR UM TURNO");
+        return true;
     }
     public override void EspecialF(ClasseBase inimigo)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("EFEITO DE TORNS");
+        inimigo.vida -= 50;
     }
 
 }
