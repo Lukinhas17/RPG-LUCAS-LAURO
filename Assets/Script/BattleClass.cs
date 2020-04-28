@@ -1,20 +1,41 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleClass : MonoBehaviour
 {
-    public ClasseBase golem = new Golem(200, 34, 26);
+    int enemyAtual = 0;
+    public ClasseBase golem = new Golem(50, 34, 26);
+    public ClasseBase goblin = new Goblin(50, 30, 26);
+    public ClasseBase dragao = new Dragao(200, 34, 26);
+    public ClasseBase necromancer = new Necromancer(100, 30, 26);
+    public ClasseBase ogro = new Ogro(200, 34, 26);
+    public ClasseBase enemy { get; set; }
     public Button especialB;
-    private int rodada,acurice, opcao,dano,valorPlayer;
-    bool enemyA,playerA,turnoPlayer,debuf;
+    public GameObject PainelDeDerrota;
+    public GameObject PainelDeVitoria;
+    private ClasseBase[] enemys = new ClasseBase[5];
+    private int rodada, acurice, opcao, dano, valorPlayer;
+    bool enemyA, playerA, turnoPlayer, debuf;
+
+    private void Awake()
+    {
+        enemys[0] = goblin;
+        enemys[1] = golem;
+        enemys[2] = dragao;
+        enemys[3] = ogro;
+        enemys[4] = necromancer;
+    }
     void Start()
     {
+        enemy = enemys[0];
         OnDebug();
         var ClassePrefab = Instantiate(PlayerScript.singleton.classe.prefab) as GameObject;
         Debug.Log("Seu nome é : " + PlayerScript.nomePlayer);
         rodada = 3;
         turnoPlayer = true;
-        OnDestroyButton(especialB);
+        OnDestroyButton(especialB);      
     }
     public int AcureceValue(int valor)//ACURECEVALUE RECEBE POR PARAMETRO UM VALOR ESSE VALOR É OU O ATAQUE OU A DEFESA DO PLAYER
     {
@@ -25,9 +46,9 @@ public class BattleClass : MonoBehaviour
         }
         else if (acurice > 1 && acurice <= 5)
         {
-            valor = valor - valor/2;
+            valor = valor - valor / 2;
         }
-        else if (acurice > 5 && acurice == 9){}
+        else if (acurice > 5 && acurice == 9) { }
         else
         {
             valor = valor + valor / 2;
@@ -35,28 +56,23 @@ public class BattleClass : MonoBehaviour
 
         return valor;
     }
-    public void AtacarP()
+    public void AcureceValueModif(int valor)
     {
-        valorPlayer = AcureceValue(PlayerScript.singleton.classe.forca);
+        valorPlayer = valor;
     }
-    public void DefenderP()
-    {
-        valorPlayer = AcureceValue(PlayerScript.singleton.classe.defesa);
-    }
-    public void TurnoPlayer(int op, ClasseBase enemy)//TURNO DO PLAYER
-    {
-
+    public void TurnoPlayer(int op)//TURNO DO PLAYER
+    {      
         opcao = op;
         //VERIFICA SE É O TURNO DO PLAYER, ESTANDO TRUE É O TURNO DO PLAYER
         if (turnoPlayer == true)
         {
             Debug.Log("TURNO DO PLAYER");
-           
+
             // SE A OPCAO DO PLAYER FOR 1 ELE ATACA SE N ELE DEFENDE - PARAMETRO DEFINIDO NO INSPECTOR
             if (opcao == 1)
             {
                 playerA = true;//VARIAVEL BOOL PARA DEFINIR SE O PLAYER ESTÁ ATACANDO OU N 
-                AtacarP();//PEGA OS VALORES DO PLAYER, TANTO DEFESA QUANTO ATAQUE 
+                AcureceValueModif(PlayerScript.singleton.classe.forca);//PEGA OS VALORES DO PLAYER, TANTO DEFESA QUANTO ATAQUE 
                 if (valorPlayer >= enemy.forca && enemyA == true)//FAZ UMA VERIFICACAO SE O ATAQUE DO PLAYER É MAIOR OU IGUAL A FORÇA DO INIMIGO E SE O INMIGO ESTÁ ATACANDO SE ISSO TUDO ESTIVER CORRETO 
                 {
                     //ATAQUE CRITICO DO PLAYER SOBRE O INIMGO
@@ -89,41 +105,43 @@ public class BattleClass : MonoBehaviour
                     OnDebug();
 
                 }
-               
+
             }
-            else if (opcao == 2)
+            if (opcao == 2)
             {
+                AcureceValueModif(AcureceValue(PlayerScript.singleton.classe.defesa));
                 playerA = false;
             }
-            else 
+            else
             {
-                EspecialN(enemy);
+                EspecialN();
             }
             turnoPlayer = false;
             Debug.Log("TURNO DO PLAYER FINALIZADO");
-
+            Death();
         }
         else
         {
-            TurnoInimigo(enemy);
+            Death();
+            TurnoInimigo();
             turnoPlayer = true;
             Debug.Log("TURNO DO PLAYER FINALIZADO");
             //N É TRUE ENTÃO É O TURNO DO INIMIGO
         }
     }
-    public void TurnoInimigo(ClasseBase enemy)
+    public void TurnoInimigo()
     {
         Debug.Log("TURNO DO INIMIGO");
-        if (opcao == 1) 
+        if (opcao == 1)
         {
-            EspecialV(enemy);
+            EspecialV();
         }
+        Debug.Log("RODADA NUMERO " + rodada);
 
-        Debug.Log("RODADA NUMERO "+ rodada);
-       
         RandomAtaq();
         if (enemyA == true)
         {
+            Debug.Log("INIMIGO ATACANDO");
 
             if (enemy.forca >= valorPlayer && playerA == true)
             {
@@ -152,11 +170,12 @@ public class BattleClass : MonoBehaviour
                 dano = 0;
                 OnDebug();
             }
-            
-            
+            Death();
         }
         else
         {
+            Death();
+            Debug.Log("INIMIGO DEFENDENDO");
             enemyA = false;
         }
     }
@@ -173,13 +192,13 @@ public class BattleClass : MonoBehaviour
             enemyA = false;
         }
     }
-    public void OnDestroyButton(Button especial) 
+    public void OnDestroyButton(Button especial)
     {
         especial.enabled = false;
         especial.image.color = Color.red;
-    
+
     }
-    public void EspecialN(ClasseBase enemy)
+    public void EspecialN()
     {
         if (debuf != true)
         {
@@ -192,7 +211,7 @@ public class BattleClass : MonoBehaviour
             }
         }
     }
-    public void EspecialV(ClasseBase enemy) 
+    public void EspecialV()
     {
         if (rodada > 0)
         {
@@ -215,12 +234,48 @@ public class BattleClass : MonoBehaviour
             dano = 20;
             enemy.vida -= dano;
             dano = 0;
-            Debug.Log("VIDA DO INIMIGO DEPOIS DO DEBUF "+ enemy.vida);
+            Debug.Log("VIDA DO INIMIGO DEPOIS DO DEBUF " + enemy.vida);
         }
     }
-    public void OnDebug() 
+    public void OnDebug()
     {
-        Debug.Log("VIDA DO PLAYER  "  +  PlayerScript.singleton.classe.vida);
-        Debug.Log("VIDA DO INIMIGO " + golem.vida);
+        Debug.Log("VIDA DO PLAYER  " + PlayerScript.singleton.classe.vida);
+        Debug.Log("VIDA DO INIMIGO " + enemy.vida);
     }
+
+    public void Duelo(int op)
+    {     
+        Debug.Log("botao");
+        TurnoPlayer(op);  
+    }
+
+    public void Death()
+    {
+        if(enemy.vida <= 0)
+        {
+            Debug.Log("VOCE VENDEU BLUAHAHAHAH");
+            TrocarDeInimigo();
+            //PainelDeVitoria.SetActive(true);
+        }
+
+        if (PlayerScript.singleton.classe.vida <= 0)
+        {
+            Debug.Log("VOCE MORREU");
+            PainelDeDerrota.SetActive(true);
+        }
+
+        return;
+    }
+
+    public void TrocarDeInimigo()
+    {
+        if (enemyAtual < enemys.Length)
+        {
+            enemyAtual++;
+            enemy = enemys[enemyAtual];
+            Debug.LogError("UM NOVO INIMIGO SURGIU, SUA VIDA É " + enemy.vida);           
+        }
+
+    }
+
 }

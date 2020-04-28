@@ -86,4 +86,64 @@ public class Golem : ClasseBase
     }
 }
 
+public class Goblin : ClasseBase
+{
+
+    public Goblin(int vida, int forca, int defesa)
+    {
+        this.vida = vida;
+        this.forca = forca;
+        this.defesa = defesa;
+    }
+    public override void EspecialP(ClasseBase inimigo)
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class Dragao : ClasseBase
+{
+
+    public Dragao(int vida, int forca, int defesa)
+    {
+        this.vida = vida;
+        this.forca = forca;
+        this.defesa = defesa;
+    }
+    public override void EspecialP(ClasseBase inimigo)
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class Ogro : ClasseBase
+{
+
+    public Ogro(int vida, int forca, int defesa)
+    {
+        this.vida = vida;
+        this.forca = forca;
+        this.defesa = defesa;
+    }
+    public override void EspecialP(ClasseBase inimigo)
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class Necromancer : ClasseBase
+{
+
+    public Necromancer(int vida, int forca, int defesa)
+    {
+        this.vida = vida;
+        this.forca = forca;
+        this.defesa = defesa;
+    }
+    public override void EspecialP(ClasseBase inimigo)
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
 
