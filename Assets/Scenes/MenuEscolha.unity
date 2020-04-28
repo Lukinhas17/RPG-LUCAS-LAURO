@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -224,7 +224,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nomeInput: {fileID: 1343927747}
-  escolher: 0
   classeManager: {fileID: 546190352}
 --- !u!4 &193689063
 Transform:
@@ -475,11 +474,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fdb0b07ecbb0424a8c649e56393e17c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ninjaPrefab: {fileID: 8712588431833521155, guid: 3caee2d8e298d2a4ba360672a47aa13a,
+  ninjaPrefab: {fileID: 2280424384429224157, guid: a7c0970a70acfce4688edfc538e2bbec,
     type: 3}
-  berserkerPrefab: {fileID: 591170948754901202, guid: ec8c79b523de27641b0d3aa316ecc161,
+  berserkerPrefab: {fileID: 1286997967092141213, guid: a7017ab93aeab0e40b8776702d14951f,
     type: 3}
-  magoPrefab: {fileID: 6009495381124126144, guid: 6a4e223a675d00845a8fb904c5efc24e,
+  magoPrefab: {fileID: 7371145461391323746, guid: f4c99ca821e1a77448c5dc902c2b2b9e,
     type: 3}
 --- !u!4 &546190353
 Transform:
