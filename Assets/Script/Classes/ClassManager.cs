@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ClassManager : MonoBehaviour
 {
-    public ClasseBase ninja = new Ninja(90, 40, 20);
-    public ClasseBase berserker = new Berserker(200, 25, 20);
-    public ClasseBase mago = new Mago(100, 35, 20);
+    public ClasseBase ninja = new Ninja(93, 33, 25);
+    public ClasseBase berserker = new Berserker(200, 23, 40);
+    public ClasseBase mago = new Mago(120, 26, 30);
   
 
     public GameObject ninjaPrefab;
