@@ -16,9 +16,9 @@ public class BattleClass : MonoBehaviour
     public GameObject PainelDeDerrota,Passarturno;
     public GameObject PainelDeVitoria;
     private ClasseBase[] enemys = new ClasseBase[5];
-    private int acurice, opcao, dano, valorPlayer,poderE;
-    private bool enemyA, playerA, turnoPlayer,inimigoA;
-
+    private int acurice, opcao, dano, valorPlayer, poderE;
+    private bool enemyA, playerA, turnoPlayer,efeitosobreI;
+    private int i;
     private void Awake()
     {
         enemys[0] = goblin;
@@ -61,7 +61,11 @@ public class BattleClass : MonoBehaviour
         {
             valor = valor - valor / 2;
         }
-        else if (acurice > 5 && acurice == 9) { }
+        else if (acurice > 5 && acurice == 9)
+        {
+            valor = valor;
+            Debug.Log(valor);
+        }
         else
         {
             valor = valor + valor / 2;
@@ -74,21 +78,20 @@ public class BattleClass : MonoBehaviour
         valorPlayer = valor;
     }
     public void TurnoPlayer(int op)//TURNO DO PLAYER
-    {      
+    {
         opcao = op;
         //VERIFICA SE É O TURNO DO PLAYER, ESTANDO TRUE É O TURNO DO PLAYER
         if (turnoPlayer == true)
         {
-            poderE += 1;
             Debug.Log("TURNO DO PLAYER");
-
             // SE A OPCAO DO PLAYER FOR 1 ELE ATACA SE N ELE DEFENDE - PARAMETRO DEFINIDO NO INSPECTOR
             if (opcao == 1)
             {
                 Debug.Log("OPÇÃO FOI ATACAR");
                 playerA = true;//VARIAVEL BOOL PARA DEFINIR SE O PLAYER ESTÁ ATACANDO OU N 
                 AcureceValueModif(PlayerScript.singleton.classe.forca);//PEGA OS VALORES DO PLAYER, TANTO DEFESA QUANTO ATAQUE 
-                if (valorPlayer >= enemy.forca && enemyA == true)//FAZ UMA VERIFICACAO SE O ATAQUE DO PLAYER É MAIOR OU IGUAL A FORÇA DO INIMIGO E SE O INMIGO ESTÁ ATACANDO SE ISSO TUDO ESTIVER CORRETO 
+               //NÃO MUDAR ESSA PARTE
+                if (valorPlayer > enemy.forca && enemyA == true)//FAZ UMA VERIFICACAO SE O ATAQUE DO PLAYER É MAIOR OU IGUAL A FORÇA DO INIMIGO E SE O INMIGO ESTÁ ATACANDO SE ISSO TUDO ESTIVER CORRETO 
                 {
                     //ATAQUE CRITICO DO PLAYER SOBRE O INIMGO
                     dano = valorPlayer + 5;//O PLAYER VAI CRITAR DANDO UM VALOR ADICIONAL AO ATAQUE
@@ -97,7 +100,7 @@ public class BattleClass : MonoBehaviour
                     Debug.Log("PLAYER ACERTOU UM DANO CRITICO O INIMIGO FICOU COM " + enemy.vida);
 
                 }
-                else if (valorPlayer <= enemy.forca && enemyA == true)//VERIFICA SE O ATAQUE DO INIMIGO É MAIOR QUE O DO PLAYER E SE O INIMIGO ESTÁ ATACANDO SE TUDO ISSO FOR VERDADE
+                else if (valorPlayer < enemy.forca && enemyA == true)//VERIFICA SE O ATAQUE DO INIMIGO É MAIOR QUE O DO PLAYER E SE O INIMIGO ESTÁ ATACANDO SE TUDO ISSO FOR VERDADE
                 {
                     //CRITICO DO INIMIGO
                     dano = enemy.forca + 5;//ACRESCENTA UM VALOR AO DANO DO INIMIGO
@@ -105,63 +108,93 @@ public class BattleClass : MonoBehaviour
                     dano = 0;
                     Debug.Log("O INIMIGO ACERTO UM CONTRA ATAQUE CRITICO A VIDA DO PLAYER FICOU " + PlayerScript.singleton.classe.vida);
                 }
-
-
-                if (valorPlayer >= enemy.defesa && enemyA != true)// VERIFICA SE O ATAQUE DO PLAYER É MAIOR DO QUE A DEFESA DO INIMGO E SE O INIMGO NÃO ESTA ATACANDO, SE ISSO FOR VERDADE
+                
+                if (valorPlayer > enemy.defesa && enemyA == false)// VERIFICA SE O ATAQUE DO PLAYER É MAIOR DO QUE A DEFESA DO INIMGO E SE O INIMGO NÃO ESTA ATACANDO, SE ISSO FOR VERDADE
                 {
                     // DANO MENOR 
                     dano = valorPlayer - enemy.defesa;// SUBTRAI O DANO DO PLAYER PELA DEFESA DO INIMIGO
                     enemy.vida = enemy.vida - dano;//SUBTRAI A VIDA DO INMIGO PELA VIDA DO PLAYER
                     dano = 0;
-                   Debug.Log("O PLAYER ATACOU POREM O INIMIGO ESTAVA EM MODO DE DEFESA O ATAQUE PASSOU, A VIDA DO INIMIGO É DE " + enemy.vida);
-
+                    Debug.Log("O PLAYER ATACOU POREM O INIMIGO ESTAVA EM MODO DE DEFESA O ATAQUE PASSOU, A VIDA DO INIMIGO É DE " + enemy.vida);
                 }
                 else if (valorPlayer <= enemy.defesa && enemyA != true)// VERIFICA SE A FORÇA DO PLAYER É MENOR QUE A DEFESA DO INIMIGO E VERIFICA SE O INIMIGO NÃO ESTÁ ATACANDO, SE ISSO FOR VERDADE 
                 {
                     //INIMIGO DEFENDEU
                     dano = 0;
                     Debug.Log("VOCE DEU MISS");
-
                 }
-                Passarturno.SetActive(true);
-
-
+                //NÃO MUDAR ESSA PARTE
+                playerA = true;
+                turnoPlayer = false;
+                Passarturno.SetActive(true);//CANVAS
             }
-
             if (opcao == 2)
             {
                 AcureceValueModif(AcureceValue(PlayerScript.singleton.classe.defesa));
-               turnoPlayer = false;
+                playerA = false;
+                turnoPlayer = false;
                 Passarturno.SetActive(true);
             }
-
             if (opcao == 3)
             {
-                inimigoA = PlayerScript.singleton.classe.EspecialB(enemy);
+                if (UiScript.playerClass == 1) 
+                {
+                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
+                    Debug.Log("HABILIDADE SAIU COM EXITO");
+                }
+
+                if (UiScript.playerClass == 3) 
+                {
+                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
+                    Debug.Log("HABILIDADE SAIU COM EXITO");
+                }
+
+                if (UiScript.playerClass == 2)
+                {
+                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
+                    Debug.Log("HABILIDADE SAIU COM EXITO");
+                }
+
                 poderE -= 3;
+                playerA = true;
+                turnoPlayer = false;
                 Passarturno.SetActive(true);
             }
-
             if (opcao == 4)
             {
                 PlayerScript.singleton.classe.EspecialF(enemy);
                 poderE -= 6;
-                Debug.Log("INIMIGO TOMOU UM DANO DE SANGRAMENTO");//COLOCAR UMA COROTINA
-                enemy.vida -= 20;
-                Debug.Log("INIMIGO TOMOU UM DANO DE SANGRAMENTO" + enemy.vida);
-                enemy.vida -= 20;
-                Debug.Log("INIMIGO TOMOU UM DANO DE SANGRAMENTO" + enemy.vida);
-                enemy.vida -= 20;
-                Debug.Log("INIMIGO TOMOU UM DANO DE SANGRAMENTO" + enemy.vida);
+                
+                if (UiScript.playerClass == 1)
+                {
+                    efeitosobreI = false;
+                }
+
+                if (UiScript.playerClass == 3)
+                {
+                    efeitosobreI = false;
+                }
+
+                if (UiScript.playerClass == 2)
+                {
+                    efeitosobreI = false;
+                    i = 3;
+                }
+
+
+                playerA = true;
+                turnoPlayer = false;
                 Passarturno.SetActive(true);
             }
+
+            poderE += 1;
             turnoPlayer = false;
+            Passarturno.SetActive(true);
             Debug.Log("TURNO DO PLAYER FINALIZADO");
             Death();
         }
         else 
         {
-            Debug.Log("APERTE O BOTÃO PARA PASSAR A VEZ");
             Passarturno.SetActive(true);
             if (opcao == 5)
             {
@@ -171,28 +204,39 @@ public class BattleClass : MonoBehaviour
     }
     public void TurnoInimigo()
     {
-        
-        RandomAtaq();
-        if (enemyA == true)
+        Debug.Log("TURNO DO INIMIGO");
+        if (efeitosobreI == true) //CASO O PLAYER ATIVE O ESPECIAL O INIMIGO VAI VERIFICAR SE A O MISS ACERTOU OU N
         {
-            Debug.Log("TURNO DO INIMIGO");
-           if (inimigoA == true) //CASO O PLAYER ATIVE O ESPECIAL O INIMIGO VAI VERIFICAR SE A O MISS ACERTOU OU N
-           {
+            if (UiScript.playerClass == 1)
+            {
                 Debug.Log("MISS");
-                inimigoA = false;//SE SIM ELE VOLTA AO NORMAL 
-                Passarturno.SetActive(false);
-           }
-           else 
-           {
+                efeitosobreI = false;//SE SIM ELE VOLTA AO NORMAL 
+            }
+
+            if (UiScript.playerClass == 2)
+            {
+                Debug.Log("NESSA RODADA O INIMIGO NÃO ATACOU POR ESTAR CONGELADO");
+                efeitosobreI = false;//SE SIM ELE VOLTA AO NORMAL 
+            }
+
+            Passarturno.SetActive(false);
+            turnoPlayer = true;
+
+        }
+        else 
+        {
+            RandomAtaq();
+            if (enemyA == true)
+            {
                 Debug.Log("INIMIGO ATACOU");
-                if (enemy.forca >= valorPlayer && playerA == true)
+                if (enemy.forca > valorPlayer && playerA == true)
                 {
                     dano = enemy.forca + 5;
                     PlayerScript.singleton.classe.vida = PlayerScript.singleton.classe.vida - dano;
                     dano = 0;
                     Debug.Log("INIMIGO ACERTOU UM ATAQUE CRITICO A VIDA DO PLAYER FOI PARA " + PlayerScript.singleton.classe.vida);
                 }
-                else if (enemy.forca <= valorPlayer && playerA == true)
+                else if (enemy.forca < valorPlayer && playerA == true)
                 {
                     dano = valorPlayer + 5;
                     enemy.vida = enemy.vida - dano;
@@ -201,15 +245,15 @@ public class BattleClass : MonoBehaviour
 
                 }
 
-                if (enemy.forca >= valorPlayer && enemyA != true)
+                if (enemy.forca > valorPlayer && playerA == false)
                 {//PLAYER TA ATACANDO E O GOLEM DEFENDENDO RESULTADO GOLEM TOMA DANO
-                    dano = valorPlayer - enemy.defesa;
-                    enemy.vida = enemy.vida - dano;
+                    Debug.Log(valorPlayer);
+                    dano =  enemy.forca - valorPlayer;
+                    PlayerScript.singleton.classe.vida = PlayerScript.singleton.classe.vida - dano;
                     dano = 0;
                     Debug.Log("INIMIGO ACERTOU ATAQUE PODEREM O PLAYER ESTAVA EM MODO DE DEFESA, MESMO ASSIM A DEFESA DO PLAYER N FOI SUFICIENTE " + PlayerScript.singleton.classe.vida);
-
                 }
-                else if (enemy.forca <= valorPlayer && enemyA != true)
+                else if (enemy.forca <= valorPlayer && playerA != true)
                 {//PLAYER TA ATACANDO E O GOLEM DEFENDENDO RESULDADO GOLEM N TOMA DONO
                     dano = 0;
                     Debug.Log("MISS " + PlayerScript.singleton.classe.vida);
@@ -217,16 +261,38 @@ public class BattleClass : MonoBehaviour
                 Death();
                 Passarturno.SetActive(false);
                 turnoPlayer = true;
-           }
-        }
-        else 
-        {
-            Death();
-            Debug.Log("INIMIGO ENTROU EM MODO DE DEFESA");
-            //PODEMOS ADICIONAR UM ROLL AQUI TB PARA QUE O INIMIGO TENHA CHANCE DE TOMAR DANO QUANDO TIVER EM MODO DE DEFESA
-            enemyA = false;
-            Passarturno.SetActive(false);
-            turnoPlayer = true;
+            }
+            else
+            {
+                Death();
+                Debug.Log("INIMIGO ENTROU EM MODO DE DEFESA");
+                //PODEMOS ADICIONAR UM ROLL AQUI TB PARA QUE O INIMIGO TENHA CHANCE DE TOMAR DANO QUANDO TIVER EM MODO DE DEFESA
+                enemyA = false;
+                Passarturno.SetActive(false);
+                turnoPlayer = true;
+            }
+
+            if (UiScript.playerClass == 2)
+            {
+                if (i>0)
+                {
+                    i -= 1;
+                    enemy.vida -= 20;
+                    Debug.Log("INIMIGO TOMOU TORNS" + enemy.vida);
+                }
+            }
+
+            if (UiScript.playerClass == 3) 
+            {
+                if (PlayerScript.singleton.classe.forca >= 10) 
+                {
+                    PlayerScript.singleton.classe.vida -= 50;
+                    PlayerScript.singleton.classe.forca -= 30;
+                    PlayerScript.singleton.classe.defesa -= 30;
+                }
+                Debug.Log("vida " + PlayerScript.singleton.classe.vida + "forca " + PlayerScript.singleton.classe.forca + "defesa " + PlayerScript.singleton.classe.defesa);
+            }
+
         }
     }
     public void RandomAtaq()
@@ -251,8 +317,7 @@ public class BattleClass : MonoBehaviour
     {
         especial.enabled = true;
         especial.image.color = Color.white;
-
-    }
+    }   
     public void Especial() 
     {
         if (poderE < 3) 
@@ -266,7 +331,7 @@ public class BattleClass : MonoBehaviour
             OnCreateButton(especialB);
             OnDestroyButton(especialF);
         }
-
+       
         if (poderE == 6)
         {
             OnCreateButton(especialF);
