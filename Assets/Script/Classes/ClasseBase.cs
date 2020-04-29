@@ -7,34 +7,41 @@ public abstract class ClasseBase
     public int forca;
     public int defesa;
     public int vidaMax;
+    public int forcaMax;
+    public int defesaMax;
     public GameObject prefab;
     public abstract bool EspecialB(ClasseBase inimigo);
-    public virtual bool Roll(ClasseBase inimigo) 
+    public virtual bool Roll(ClasseBase inimigo) //FAZ UM ROLL PARA VERIFICAR SE O INIMIGO VAI DAR MIRR NO TURNO SEGUINTE 
     {
         int acurice = Random.Range(0, 10);
         if (acurice >= 0 && acurice <= 7)
         {
-            Debug.Log("O PROXIMO ATAQUE DO INIMIGO TERÁ UMA GRANDE CHANDE DE DAR MISS");
+            //ACONTECE O MISS
         }
-        else if (acurice >= 8 && acurice == 10) 
+        else if (acurice >= 8 && acurice == 10)
         {
             inimigo.forca += inimigo.forca;
-            Debug.Log("VALOR DA FORÇA DO INIMIGO COM O MISS ALTO" + inimigo.forca);
+
+            Debug.Log(vida);
         }
         return true;
     }
     abstract public void EspecialF(ClasseBase inimigo);
+
 }
 
 public class Ninja : ClasseBase
 {
-    public Ninja(int vidaMax,int vida, int forca, int defesa)
+    public Ninja(int vidaMax, int defesaMax, int forcaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
         this.vidaMax = vidaMax;
+        this.defesaMax = defesaMax;
+        this.forcaMax = forcaMax;
     }
+<<<<<<< Updated upstream
     public int Especial()
     {
         vida += 60;
@@ -43,24 +50,22 @@ public class Ninja : ClasseBase
         return forcaE;
 
     }
+=======
+    
+>>>>>>> Stashed changes
     public override void EspecialF(ClasseBase inimigo)
     {
-        Debug.Log("ESPECIAL 4 LAMINAS MORTAIS");
-        int dano;
-        dano = Especial();
-        inimigo.vida -= dano;
-        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO");//COLOCAR UMA COROTINA
-        inimigo.vida -= 20;
-        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO" + inimigo.vida);
-        inimigo.vida -= 20;
-        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO" + inimigo.vida);
-        inimigo.vida -= 20;
-        Debug.Log("INIMIGO TOMOU UM ATAQUE RAPIDO" + inimigo.vida);
-       
+        inimigo.vida -= forca;
+        inimigo.vida -= forca + forca/2;
+        inimigo.vida -= forca + forca;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
-        Debug.Log("TENTE ME ACERTAR");
+        vida += 50;
+        if (vida > vidaMax)
+        {
+            vida = vidaMax;
+        }
         return Roll(inimigo);
     }
     public override bool Roll(ClasseBase inimigo)
@@ -71,54 +76,50 @@ public class Ninja : ClasseBase
 
 public class Berserker : ClasseBase
 {
-    public Berserker(int vidaMax,int vida, int forca, int defesa)
+    public Berserker(int vidaMax, int defesaMax, int forcaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
         this.vidaMax = vidaMax;
+        this.defesaMax = defesaMax;
+        this.forcaMax = forcaMax;
     }
 
     public override bool EspecialB(ClasseBase inimigo)
     {
-        Debug.Log("MODO BERSERKER ATIVADO");
-        Debug.Log("DEUS ACIMA DE TODOS BESERKER ACIMA DE TUDOO HA HA HAA");
         vida = 300;
         vidaMax = 300;
         forca = 70;
         defesa = 70;
-        Debug.LogError("ATRIBUTOS ALTOS");
         return false;
     }
     public override void EspecialF(ClasseBase inimigo)
     {
         int dano;
-        Debug.Log("SINTA O PESO DO MARTELOOO");//COLOCAR UMA COROTINA
-        dano = forca += forca * 3;
+        dano = forca * 5;
         inimigo.vida -= dano;
-        Debug.Log("INIMIGO TOMOU UM ATAQUE DE E FICOU COM A VIDA " + inimigo.vida);//COLOCAR UMA COROTINA
-       
     }
 }
 
 public class Mago : ClasseBase
 {
-    public Mago(int vidaMax, int vida, int forca, int defesa)
+    public Mago(int vidaMax, int defesaMax, int forcaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
         this.vidaMax = vidaMax;
+        this.defesaMax = defesaMax;
+        this.forcaMax = forcaMax;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
-        Debug.Log("ORBE DE GELO FIQUE PARADO POR UM TURNO");
         return true;
     }
     public override void EspecialF(ClasseBase inimigo)
     {
-        Debug.Log("EFEITO DE TORNS");
-        inimigo.vida -= 50;
+        inimigo.vida -= 150;
     }
 
 }
