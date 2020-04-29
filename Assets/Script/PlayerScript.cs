@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    public static string nomePlayer = null;
-    public int acurice;
+    public string nomePlayer = null;
+    public int tentativas = 3;
+
+
     public static PlayerScript singleton {get; private set;}
     public ClasseBase classe {get; set;}
 
