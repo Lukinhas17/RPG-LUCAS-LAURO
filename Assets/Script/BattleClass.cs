@@ -7,7 +7,7 @@ public class BattleClass : MonoBehaviour
 {
     int enemyAtual = 0;
     public ClasseBase golem = new Golem(200,200, 35, 40);
-    public ClasseBase goblin = new Goblin(100,100, 30, 20);
+    public ClasseBase goblin = new Goblin(100,100, 10, 1);
     public ClasseBase dragao = new Dragao(500,500, 50, 30);
     public ClasseBase necromancer = new Necromancer(90,90, 40, 10);
     public ClasseBase ogro = new Ogro(200,200, 44, 26);
@@ -21,107 +21,99 @@ public class BattleClass : MonoBehaviour
     public GameObject golemP;
 
     private GameObject enemyPrefeb;
+    UiFeedBack Mensagem;
 
+    public bool coisa;
 
-    public GameObject PainelDeDerrota,Passarturno;
+    public GameObject PainelDeDerrota,Passarturno,panelDeDerrotaD;
     public GameObject PainelDeVitoria;
-<<<<<<< HEAD
+    public GameObject PainelDeVitoriaD;
 
 
     public Button especialB, especialF;
-=======
-    private ClasseBase[] enemys = new ClasseBase[5];
->>>>>>> master
     private int acurice, opcao, dano, valorPlayer, poderE;
     private bool enemyA, playerA, turnoPlayer,efeitosobreI;
     private int i;
     private void Awake()
     {
+        //SETA QUAIS SÃO OS PREFABS DOS INIMIGOS 
         goblin.prefab = goblinP;
         golem.prefab = golemP;
         ogro.prefab = ogroP;
         necromancer.prefab = necromancerP;
         dragao.prefab = dragaoP;
+        //CRIA UM ARRAY DE INIMIGOS CONTENDO TODOS OS INIMIGOS NA ORDEM DO MAIS FRACO AO MAIS FORTE
+        enemys[0] = goblin; ;
+        enemys[1] = ogro;
+        enemys[2] = golem;
+        enemys[3] = necromancer;
+         enemys[4] = dragao;
+        enemy = enemys[0];//INICIA COM VETOR IGUAL A 0
 
-        enemys[0] = goblin;
-        enemys[1] = golem;
-        enemys[2] = dragao;
-        enemys[3] = ogro;
-        enemys[4] = necromancer;
-
-        enemy = enemys[0];
-
-        enemyPrefeb = Instantiate(enemy.prefab) as GameObject;
-
-        var ClassePrefab = Instantiate(PlayerScript.singleton.classe.prefab) as GameObject;
-        Debug.Log("Seu nome é : " + PlayerScript.nomePlayer);
-
-        Debug.Log("OS STATUS INICIAIS DE CADA JOGADOR É DE: ");
-        Debug.Log("PLAYER VIDA: " + PlayerScript.singleton.classe.vida);
-        Debug.Log("PLAYER FORÇA: " + PlayerScript.singleton.classe.forca);
-        Debug.Log("PLAYER DEFESA: " + PlayerScript.singleton.classe.defesa);
-        Debug.Log("INIMIGO VIDA: " + enemy.vida);
-        Debug.Log("INIMIGO FORÇA: " + enemy.forca);
-        Debug.Log("INIMIGO DEFESA: " + enemy.defesa);
-        turnoPlayer = true;
-        OnDestroyButton(especialB);
-        OnDestroyButton(especialF);
-        Passarturno.SetActive(false);
-        poderE = 0;
+        enemyPrefeb = Instantiate(enemy.prefab) as GameObject;//ISTANCIA OS INIMIGOS
+        var ClassePrefab = Instantiate(PlayerScript.singleton.classe.prefab) as GameObject;//ISTANCIA O PLAYER
+        turnoPlayer = true;//DEIXA O TURNO DO PLAYER ATIVO, CASO COMEÇA COM O PLAYER O RAUND
+        OnDestroyButton(especialB);//DESATIVA A FUNÇÃO PARA O ATAQUE BASICO
+        OnDestroyButton(especialF);//DESATIVA A FUNÇÃO PARA O ATAQUE FORTE
+        Passarturno.SetActive(false);//PASSA O TURNO PARA O INIMIGO
+        poderE = 0;//PODER ESPECIAL IGUAL A 0 ISSO É UM CONTADOR PARA QUE POSTERIORMENTE QUANDO ESSE PODER CHEGAR A 3 E 6 O PLAYER PODER USAR O ESPECIAL
     }
 
+    private void Start()
+    {
+        Mensagem = GameObject.Find("UIManager").GetComponent<UiFeedBack>();//PROCURA REFENCIA DO SCRIPT PELO UIMANAGER
+       //USAR COMO DEBUG POREM APARECE NO HUD
+    }
     private void Update()
     {
-        Especial();
+        Especial();//CHAMA A VERIFICAÇÃO DO ESPECIAL
     }
-    public int AcureceValue(int valor)//ACURECEVALUE RECEBE POR PARAMETRO UM VALOR ESSE VALOR É OU O ATAQUE OU A DEFESA DO PLAYER
+    public int AcureceValue(int valor)//ACURECE VALUE RECEBE POR PARAMETRO UM VALOR ESSE VALOR É OU O ATAQUE OU A DEFESA DO PLAYER
     {
-        acurice = Random.Range(0, 10);
+        acurice = Random.Range(0, 10);//FAZ UM RANDOM PARA VER SE ESSE VALOR VAI SAIR ZERADO BAIXO MEDIO OU ALTO
         if (acurice == 0)
         {
-            valor = 0;
+            valor = 0;//BAIXO
         }
         else if (acurice > 1 && acurice <= 5)
         {
-            valor = valor - valor / 2;
+            valor = valor - valor / 2;//BAIXO
         }
         else if (acurice > 5 && acurice == 9)
         {
-<<<<<<< HEAD
-=======
-            valor = valor;
->>>>>>> master
-            Debug.Log(valor);
+            //NORMAL
         }
         else
         {
-            valor = valor + valor / 2;
+            valor = valor + valor;//ALMENTADO
         }
 
         return valor;
     }
-    public void AcureceValueModif(int valor)
+    public void AcureceValueModif(int valor)//RECEBE POR PARAMETRO O VALOR
     {
-        valorPlayer = valor;
+        valorPlayer = valor;//VALORPLAYER É A VARIAVEL GLOBAL PARA DEFESA E ATAQUE ETC ELA RECEBE UM PARAMETRO QUE É DEFINIDO NOS BOTOES 
+        //E POSTERIORMENTE É MODIFICADA NO ACURECEVALUE
     }
     public void TurnoPlayer(int op)//TURNO DO PLAYER
     {
+        Mensagem.Mensagens = "TURNO DO PLAYER";
         opcao = op;
         //VERIFICA SE É O TURNO DO PLAYER, ESTANDO TRUE É O TURNO DO PLAYER
         if (turnoPlayer == true)
         {
             Debug.Log("TURNO DO PLAYER");
-            // SE A OPCAO DO PLAYER FOR 1 ELE ATACA SE N ELE DEFENDE - PARAMETRO DEFINIDO NO INSPECTOR
+            // SE A OPCAO DO PLAYER FOR 1 ELE ATACA 
             if (opcao == 1)
             {
                 Debug.Log("OPÇÃO FOI ATACAR");
                 playerA = true;//VARIAVEL BOOL PARA DEFINIR SE O PLAYER ESTÁ ATACANDO OU N 
-                AcureceValueModif(PlayerScript.singleton.classe.forca);//PEGA OS VALORES DO PLAYER, TANTO DEFESA QUANTO ATAQUE 
-               //NÃO MUDAR ESSA PARTE
+                AcureceValueModif(PlayerScript.singleton.classe.forca);//PEGA OS VALORES DO PLAYER, TANTO DEFESA E MODIFICA ADICIONANDO NO PARAMENTRO
+               
                 if (valorPlayer > enemy.forca && enemyA == true)//FAZ UMA VERIFICACAO SE O ATAQUE DO PLAYER É MAIOR OU IGUAL A FORÇA DO INIMIGO E SE O INMIGO ESTÁ ATACANDO SE ISSO TUDO ESTIVER CORRETO 
                 {
                     //ATAQUE CRITICO DO PLAYER SOBRE O INIMGO
-                    dano = valorPlayer + 5;//O PLAYER VAI CRITAR DANDO UM VALOR ADICIONAL AO ATAQUE
+                    dano = valorPlayer + 10;//O PLAYER VAI CRITAR DANDO UM VALOR ADICIONAL AO ATAQUE
                     enemy.vida = enemy.vida - dano;//SUBTRAI O A VIDA PELO DANO
                     dano = 0;//RESETA O VALOR DO DANO
                     Debug.Log("PLAYER ACERTOU UM DANO CRITICO O INIMIGO FICOU COM " + enemy.vida);
@@ -150,42 +142,41 @@ public class BattleClass : MonoBehaviour
                     dano = 0;
                     Debug.Log("VOCE DEU MISS");
                 }
-                //NÃO MUDAR ESSA PARTE
-                playerA = true;
-                turnoPlayer = false;
-                Passarturno.SetActive(true);//CANVAS
+                playerA = true;//TERMINA A AÇÃO DO PLAYER DEIXANDO ELE EM MODO DE ATAQUE
+                turnoPlayer = false;//DEIXA O TURNO DO PLAYER DESATIVADO
+                Passarturno.SetActive(true);//CANVAS ATIVA, ASSIM O PLAYER N PODE USAR OS BOTÕES 
             }
-            if (opcao == 2)
+            if (opcao == 2)//DEFESA
             {
-                AcureceValueModif(AcureceValue(PlayerScript.singleton.classe.defesa));
-                playerA = false;
-                turnoPlayer = false;
-                Passarturno.SetActive(true);
+                AcureceValueModif(AcureceValue(PlayerScript.singleton.classe.defesa));//ADICIONA O ACURECEVALUE NA DEFESA PARA VER SE O PLAYER VAI SAIR COM UMA DEFESA MAIS FORTE, NORMAL, FRACA OU ZERADA
+                playerA = false;//DEIXA O PLAYER NO MODO DE DEFESA
+                turnoPlayer = false;//PASSA PARA O TURNO DO INIMIGO
+                Passarturno.SetActive(true);//ATIVA O CANVAS PARA O PLAYER N PODER USAR
             }
-            if (opcao == 3)
+            if (opcao == 3)//ESPECIAL NORMAL
             {
-                if (UiScript.playerClass == 1) 
+                if (UiScript.playerClass == 1) //VERIFICA SE OPÇÃO NO UISCRIPT FOI UM NINJA PARA ESPECIFICAR O ESPECIAL DO NINJA
                 {
-                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
+                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);//CHAMA O ESPECIAL  NOMAL QUE VEM DA CLASSE BASE
                     Debug.Log("HABILIDADE SAIU COM EXITO");
                 }
 
-                if (UiScript.playerClass == 3) 
+                if (UiScript.playerClass == 3) //VERIFICA SE OPÇÃO NO UISCRIPT FOI UM NINJA PARA ESPECIFICAR O ESPECIAL DO BERSERKER
                 {
-                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
+                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);// CHAMA O ESPECIAL  NOMAL QUE VEM DA CLASSE BASE
                     Debug.Log("HABILIDADE SAIU COM EXITO");
                 }
 
-                if (UiScript.playerClass == 2)
+                if (UiScript.playerClass == 2)//VERIFICA SE OPÇÃO NO UISCRIPT FOI UM NINJA PARA ESPECIFICAR O ESPECIAL DO MAGO
                 {
-                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
+                    efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);// CHAMA O ESPECIAL  NOMAL QUE VEM DA CLASSE BASE
                     Debug.Log("HABILIDADE SAIU COM EXITO");
                 }
 
-                poderE -= 3;
-                playerA = true;
-                turnoPlayer = false;
-                Passarturno.SetActive(true);
+                poderE -= 3;//DIMINUI O PODER USADO PELO ESPECIAL 
+                playerA = true;//DEIXA O PLAYER EM MODO DE ATAQUE
+                turnoPlayer = false;//TERMINA O TURNO DO PLAYER E PASSA PARA O INIMIGO
+                Passarturno.SetActive(true);//ATIVA O CANVAS PARA O PLAYER N PODER USAR OS BOTÕES 
             }
             if (opcao == 4)
             {
@@ -229,15 +220,15 @@ public class BattleClass : MonoBehaviour
             }
         }
     }
-    public void TurnoInimigo()
+    public void TurnoInimigo()//TURNO DO INIMIGO
     {
-        Debug.Log("TURNO DO INIMIGO");
-        if (efeitosobreI == true) //CASO O PLAYER ATIVE O ESPECIAL O INIMIGO VAI VERIFICAR SE A O MISS ACERTOU OU N
+        if (efeitosobreI == true) //CASO O PLAYER ATIVE O ESPECIAL O INIMIGO VAI VERIFICAR SE O EFEITOSOBREOINIMIGO É TRUE
         {
-            if (UiScript.playerClass == 1)
-            {
+            if (UiScript.playerClass == 1)//VERIFICA SE A CLASSE EM QUESTÃO É UM NINJA
+            { 
+                //O INIMIGO GANHA UM BUFF DE EVA, AQUI O INIMIGO ESTÁ ERRANDO O ATAQUE
                 Debug.Log("MISS");
-                efeitosobreI = false;//SE SIM ELE VOLTA AO NORMAL 
+                efeitosobreI = false;//DESATIVA O EFEITOSOBREOINIMIGO
             }
 
             if (UiScript.playerClass == 2)
@@ -252,7 +243,17 @@ public class BattleClass : MonoBehaviour
         }
         else 
         {
-            RandomAtaq();
+
+            if (coisa == false)
+            {
+                RandomAtaq();
+            }
+            else 
+            {
+                enemyA = false;
+                coisa = false;
+            }
+
             if (enemyA == true)
             {
                 Debug.Log("INIMIGO ATACOU");
@@ -305,22 +306,15 @@ public class BattleClass : MonoBehaviour
                 {
                     i -= 1;
                     enemy.vida -= 20;
-<<<<<<< HEAD
                     Debug.Log("INIMIGO TOMOU TORNS " + enemy.vida);
-=======
-                    Debug.Log("INIMIGO TOMOU TORNS" + enemy.vida);
->>>>>>> master
                 }
             }
 
             if (UiScript.playerClass == 3) 
             {
-                if (PlayerScript.singleton.classe.forca >= 10) 
+                if (PlayerScript.singleton.classe.vida > 200) 
                 {
-<<<<<<< HEAD
                     PlayerScript.singleton.classe.vidaMax -= 50;
-=======
->>>>>>> master
                     PlayerScript.singleton.classe.vida -= 50;
                     PlayerScript.singleton.classe.forca -= 30;
                     PlayerScript.singleton.classe.defesa -= 30;
@@ -381,20 +375,33 @@ public class BattleClass : MonoBehaviour
     {     
         TurnoPlayer(op);  
     }
+
+    public void coisaF()
+    {
+        coisa = true;
+    }
+
     public void Death()
     {
         if(enemy.vida <= 0)
         {
-            Debug.Log("VOCE VENCEU BLUAHAHAHAH");
+            coisaF();
             GameObject.Destroy(enemyPrefeb);      
             TrocarDeInimigo();
-            //PainelDeVitoria.SetActive(true);
+            PainelDeVitoriaD.SetActive(true);
         }
 
         if (PlayerScript.singleton.classe.vida <= 0)
         {
-            Debug.Log("VOCE MORREU");
-            PainelDeDerrota.SetActive(true);
+            if (PlayerScript.singleton.tentativas <= 1)
+            {
+                panelDeDerrotaD.SetActive(true);
+            }
+            else
+            {
+                if (PlayerScript.singleton.tentativas > 1)
+                    PainelDeDerrota.SetActive(true);
+            }
         }
 
         return;
@@ -403,12 +410,25 @@ public class BattleClass : MonoBehaviour
     {
         if (enemyAtual < enemys.Length)
         {
-            enemyAtual++;
-            enemy = enemys[enemyAtual];
-            enemyPrefeb = Instantiate(enemy.prefab);
-            Debug.Log("UM NOVO INIMIGO SURGIU, SUA VIDA É " + enemy.vida);           
+            if(enemyAtual > 4)
+            {
+                PainelDeVitoria.SetActive(true);
+            }
+            else
+            {
+                enemyAtual++;
+                enemy = enemys[enemyAtual];
+                enemyPrefeb = Instantiate(enemy.prefab);
+                Debug.Log("UM NOVO INIMIGO SURGIU, SUA VIDA É " + enemy.vida);
+            }         
         }
 
+    }
+
+    public void JogarNovamente()
+    {
+        PlayerScript.singleton.tentativas--;
+        PlayerScript.singleton.classe.vida = PlayerScript.singleton.classe.vidaMax / 2;
     }
 
 

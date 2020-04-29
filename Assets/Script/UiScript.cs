@@ -36,12 +36,13 @@ public class UiScript : MonoBehaviour
         escolher = true;
     }
 
+
     public void BottonContinuar(string scene)
     {
         if (nomeInput.textComponent.text.Length != 0 && escolher == true)
         {
-            PlayerScript.nomePlayer = nomeInput.textComponent.text;
-            SceneScript.SceneSingleton.LoadScene(scene);
+            PlayerScript.singleton.nomePlayer = nomeInput.textComponent.text;
+            SceneScript.singleton.LoadScene(scene);
         }
         else
         {

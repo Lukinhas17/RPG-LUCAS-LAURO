@@ -37,7 +37,11 @@ public class Ninja : ClasseBase
     }
     public int Especial()
     {
-        vida += 55;
+        vida += 50;
+        if(vida > vidaMax)
+        {
+            vida = vidaMax;
+        }
         int forcaE = forca + 40;
         Debug.Log("VIDA RECUPERADA " + vida);
         return forcaE;
@@ -84,10 +88,7 @@ public class Berserker : ClasseBase
         Debug.Log("MODO BERSERKER ATIVADO");
         Debug.Log("DEUS ACIMA DE TODOS BESERKER ACIMA DE TUDOO HA HA HAA");
         vida = 300;
-<<<<<<< HEAD
         vidaMax = 300;
-=======
->>>>>>> master
         forca = 70;
         defesa = 70;
         Debug.LogError("ATRIBUTOS ALTOS");
@@ -97,7 +98,7 @@ public class Berserker : ClasseBase
     {
         int dano;
         Debug.Log("SINTA O PESO DO MARTELOOO");//COLOCAR UMA COROTINA
-        dano = forca += forca * 3;
+        dano = forca * 5;
         inimigo.vida -= dano;
         Debug.Log("INIMIGO TOMOU UM ATAQUE DE E FICOU COM A VIDA " + inimigo.vida);//COLOCAR UMA COROTINA
        
