@@ -15,13 +15,20 @@ public class UIBattle : MonoBehaviour
     public Text defesaEnemyText;
     public Text danoEnemyText;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
     float vida = PlayerScript.singleton.classe.vida;
     float vidaCheia = PlayerScript.singleton.classe.vidaMax;
     float vidaE;
     float vidaCheiaE;
     float defesaE;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     private void Start()
     {
         AtualizarStatus();
@@ -54,8 +61,31 @@ public class UIBattle : MonoBehaviour
 
         vidaText.text = PlayerScript.singleton.classe.vida.ToString() + "/" + PlayerScript.singleton.classe.vidaMax.ToString();      
         vidaImage.rectTransform.sizeDelta = new Vector2(vida / vidaCheia * 159, 20);
+<<<<<<< HEAD
         danoEnemyText.text = "dano : " + BattleClass.enemy.forca.ToString();
         defesaEnemyText.text = "defesa : " + BattleClass.enemy.defesa.ToString();
+=======
+
+
+
+
+
+
+        danoEnemyText.text = "dano : " + BattleClass.enemy.forca.ToString();
+        defesaEnemyText.text = "defesa : " + BattleClass.enemy.defesa.ToString();
+        /*
+        if (BattleClass.enemy.vida > BattleClass.enemy.vidaMax)
+        {
+            BattleClass.enemy.vida = BattleClass.enemy.vidaMax;
+
+        }
+        if (BattleClass.enemy.vida <= 0)
+        {
+            BattleClass.enemy.vida = 0;
+        }
+*/
+
+>>>>>>> master
         vidaEnemyText.text = BattleClass.enemy.vida.ToString() + "/" + BattleClass.enemy.vidaMax.ToString();
         vidaEnemyImage.rectTransform.sizeDelta = new Vector2(vidaE / vidaCheiaE * 159, 20);
     }

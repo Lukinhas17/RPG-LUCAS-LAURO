@@ -25,9 +25,19 @@ public class BattleClass : MonoBehaviour
 
     public GameObject PainelDeDerrota,Passarturno;
     public GameObject PainelDeVitoria;
+<<<<<<< HEAD
 
 
     public Button especialB, especialF;
+=======
+<<<<<<< HEAD
+
+
+    public Button especialB, especialF;
+=======
+    private ClasseBase[] enemys = new ClasseBase[5];
+>>>>>>> master
+>>>>>>> master
     private int acurice, opcao, dano, valorPlayer, poderE;
     private bool enemyA, playerA, turnoPlayer,efeitosobreI;
     private int i;
@@ -60,11 +70,14 @@ public class BattleClass : MonoBehaviour
         poderE = 0;
     }
 
+<<<<<<< HEAD
     public void Start()
     {
         Mensagem = GameObject.Find("UIManager").GetComponent<UiFeedBack>();
         Mensagem.Mensagens = "INICIO DA PARTIDA";
     }
+=======
+>>>>>>> master
     private void Update()
     {
         Especial();
@@ -82,6 +95,13 @@ public class BattleClass : MonoBehaviour
         }
         else if (acurice > 5 && acurice == 9)
         {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+            valor = valor;
+>>>>>>> master
+>>>>>>> master
             Debug.Log(valor);
         }
         else
@@ -291,7 +311,15 @@ public class BattleClass : MonoBehaviour
                 {
                     i -= 1;
                     enemy.vida -= 20;
+<<<<<<< HEAD
                     Debug.Log("INIMIGO TOMOU TORNS " + enemy.vida);
+=======
+<<<<<<< HEAD
+                    Debug.Log("INIMIGO TOMOU TORNS " + enemy.vida);
+=======
+                    Debug.Log("INIMIGO TOMOU TORNS" + enemy.vida);
+>>>>>>> master
+>>>>>>> master
                 }
             }
 
@@ -299,7 +327,14 @@ public class BattleClass : MonoBehaviour
             {
                 if (PlayerScript.singleton.classe.vida > 200) 
                 {
+<<<<<<< HEAD
                     PlayerScript.singleton.classe.vidaMax -= 50;
+=======
+<<<<<<< HEAD
+                    PlayerScript.singleton.classe.vidaMax -= 50;
+=======
+>>>>>>> master
+>>>>>>> master
                     PlayerScript.singleton.classe.vida -= 50;
                     PlayerScript.singleton.classe.forca -= 30;
                     PlayerScript.singleton.classe.defesa -= 30;

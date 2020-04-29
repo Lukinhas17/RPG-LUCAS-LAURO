@@ -84,7 +84,14 @@ public class Berserker : ClasseBase
         Debug.Log("MODO BERSERKER ATIVADO");
         Debug.Log("DEUS ACIMA DE TODOS BESERKER ACIMA DE TUDOO HA HA HAA");
         vida = 300;
+<<<<<<< HEAD
         vidaMax = 300;
+=======
+<<<<<<< HEAD
+        vidaMax = 300;
+=======
+>>>>>>> master
+>>>>>>> master
         forca = 70;
         defesa = 70;
         Debug.LogError("ATRIBUTOS ALTOS");
