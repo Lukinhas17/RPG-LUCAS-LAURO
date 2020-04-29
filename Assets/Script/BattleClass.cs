@@ -6,45 +6,64 @@ using UnityEngine.UI;
 public class BattleClass : MonoBehaviour
 {
     int enemyAtual = 0;
-    public ClasseBase golem = new Golem(200, 35, 40);
-    public ClasseBase goblin = new Goblin(100, 30, 20);
-    public ClasseBase dragao = new Dragao(500, 50, 30);
-    public ClasseBase necromancer = new Necromancer(90, 40, 10);
-    public ClasseBase ogro = new Ogro(200, 44, 26);
-    public ClasseBase enemy { get; set; }
-    public Button especialB, especialF;
+    public ClasseBase golem = new Golem(200,200, 35, 40);
+    public ClasseBase goblin = new Goblin(100,100, 30, 20);
+    public ClasseBase dragao = new Dragao(500,500, 50, 30);
+    public ClasseBase necromancer = new Necromancer(90,90, 40, 10);
+    public ClasseBase ogro = new Ogro(200,200, 44, 26);
+    public static ClasseBase enemy { get; set; }
+    private ClasseBase[] enemys = new ClasseBase[5];
+
+    public GameObject ogroP;
+    public GameObject dragaoP;
+    public GameObject goblinP;
+    public GameObject necromancerP;
+    public GameObject golemP;
+
+    private GameObject enemyPrefeb;
+
+
     public GameObject PainelDeDerrota,Passarturno;
     public GameObject PainelDeVitoria;
-    private ClasseBase[] enemys = new ClasseBase[5];
+
+
+    public Button especialB, especialF;
     private int acurice, opcao, dano, valorPlayer, poderE;
     private bool enemyA, playerA, turnoPlayer,efeitosobreI;
     private int i;
+
+    UiFeedBack Mensagem;
+
     private void Awake()
     {
+        goblin.prefab = goblinP;
+        golem.prefab = golemP;
+        ogro.prefab = ogroP;
+        necromancer.prefab = necromancerP;
+        dragao.prefab = dragaoP;
+
         enemys[0] = goblin;
         enemys[1] = golem;
         enemys[2] = dragao;
         enemys[3] = ogro;
         enemys[4] = necromancer;
-    }
-    void Start()
-    {
-        enemy = enemys[0];
-        var ClassePrefab = Instantiate(PlayerScript.singleton.classe.prefab) as GameObject;
-        Debug.Log("Seu nome é : " + PlayerScript.nomePlayer);
 
-        Debug.Log("OS STATUS INICIAIS DE CADA JOGADOR É DE: ");
-        Debug.Log("PLAYER VIDA: " + PlayerScript.singleton.classe.vida);
-        Debug.Log("PLAYER FORÇA: " + PlayerScript.singleton.classe.forca);
-        Debug.Log("PLAYER DEFESA: " + PlayerScript.singleton.classe.defesa);
-        Debug.Log("INIMIGO VIDA: " + enemy.vida);
-        Debug.Log("INIMIGO FORÇA: " + enemy.forca);
-        Debug.Log("INIMIGO DEFESA: " + enemy.defesa);
+        enemy = enemys[0];
+
+        enemyPrefeb = Instantiate(enemy.prefab) as GameObject;
+
+        var ClassePrefab = Instantiate(PlayerScript.singleton.classe.prefab) as GameObject;
         turnoPlayer = true;
         OnDestroyButton(especialB);
         OnDestroyButton(especialF);
         Passarturno.SetActive(false);
         poderE = 0;
+    }
+
+    public void Start()
+    {
+        Mensagem = GameObject.Find("UIManager").GetComponent<UiFeedBack>();
+        Mensagem.Mensagens = "INICIO DA PARTIDA";
     }
     private void Update()
     {
@@ -63,7 +82,6 @@ public class BattleClass : MonoBehaviour
         }
         else if (acurice > 5 && acurice == 9)
         {
-            valor = valor;
             Debug.Log(valor);
         }
         else
@@ -83,11 +101,11 @@ public class BattleClass : MonoBehaviour
         //VERIFICA SE É O TURNO DO PLAYER, ESTANDO TRUE É O TURNO DO PLAYER
         if (turnoPlayer == true)
         {
-            Debug.Log("TURNO DO PLAYER");
+            Mensagem.Mensagens = "TURNO DO INIMIGO";
             // SE A OPCAO DO PLAYER FOR 1 ELE ATACA SE N ELE DEFENDE - PARAMETRO DEFINIDO NO INSPECTOR
             if (opcao == 1)
             {
-                Debug.Log("OPÇÃO FOI ATACAR");
+                Mensagem.Mensagens = "OPÇÃO FOI ATACAR";
                 playerA = true;//VARIAVEL BOOL PARA DEFINIR SE O PLAYER ESTÁ ATACANDO OU N 
                 AcureceValueModif(PlayerScript.singleton.classe.forca);//PEGA OS VALORES DO PLAYER, TANTO DEFESA QUANTO ATAQUE 
                //NÃO MUDAR ESSA PARTE
@@ -97,8 +115,7 @@ public class BattleClass : MonoBehaviour
                     dano = valorPlayer + 5;//O PLAYER VAI CRITAR DANDO UM VALOR ADICIONAL AO ATAQUE
                     enemy.vida = enemy.vida - dano;//SUBTRAI O A VIDA PELO DANO
                     dano = 0;//RESETA O VALOR DO DANO
-                    Debug.Log("PLAYER ACERTOU UM DANO CRITICO O INIMIGO FICOU COM " + enemy.vida);
-
+                    Mensagem.Mensagens = "O PLAYER OBTEVE UM ACERTO CRITICO";
                 }
                 else if (valorPlayer < enemy.forca && enemyA == true)//VERIFICA SE O ATAQUE DO INIMIGO É MAIOR QUE O DO PLAYER E SE O INIMIGO ESTÁ ATACANDO SE TUDO ISSO FOR VERDADE
                 {
@@ -106,22 +123,21 @@ public class BattleClass : MonoBehaviour
                     dano = enemy.forca + 5;//ACRESCENTA UM VALOR AO DANO DO INIMIGO
                     PlayerScript.singleton.classe.vida = PlayerScript.singleton.classe.vida - dano;//SUBTRAI A VIDA DO PLAYER PELO DANO
                     dano = 0;
-                    Debug.Log("O INIMIGO ACERTO UM CONTRA ATAQUE CRITICO A VIDA DO PLAYER FICOU " + PlayerScript.singleton.classe.vida);
+                    Mensagem.Mensagens = "O INIMIGO ACERTO UM CONTRA ATAQUE CRITICO";
                 }
-                
                 if (valorPlayer > enemy.defesa && enemyA == false)// VERIFICA SE O ATAQUE DO PLAYER É MAIOR DO QUE A DEFESA DO INIMGO E SE O INIMGO NÃO ESTA ATACANDO, SE ISSO FOR VERDADE
                 {
                     // DANO MENOR 
                     dano = valorPlayer - enemy.defesa;// SUBTRAI O DANO DO PLAYER PELA DEFESA DO INIMIGO
                     enemy.vida = enemy.vida - dano;//SUBTRAI A VIDA DO INMIGO PELA VIDA DO PLAYER
                     dano = 0;
-                    Debug.Log("O PLAYER ATACOU POREM O INIMIGO ESTAVA EM MODO DE DEFESA O ATAQUE PASSOU, A VIDA DO INIMIGO É DE " + enemy.vida);
+                    Mensagem.Mensagens = "O PLAYER ATACOU POREM O INIMIGO ESTAVA EM MODO DE DEFESA O ATAQUE PASSOU, A VIDA DO INIMIGO É DE " + enemy.vida.ToString();
                 }
                 else if (valorPlayer <= enemy.defesa && enemyA != true)// VERIFICA SE A FORÇA DO PLAYER É MENOR QUE A DEFESA DO INIMIGO E VERIFICA SE O INIMIGO NÃO ESTÁ ATACANDO, SE ISSO FOR VERDADE 
                 {
                     //INIMIGO DEFENDEU
                     dano = 0;
-                    Debug.Log("VOCE DEU MISS");
+                    Mensagem.Mensagens = "VOCE DEU MISS";
                 }
                 //NÃO MUDAR ESSA PARTE
                 playerA = true;
@@ -140,19 +156,16 @@ public class BattleClass : MonoBehaviour
                 if (UiScript.playerClass == 1) 
                 {
                     efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
-                    Debug.Log("HABILIDADE SAIU COM EXITO");
                 }
 
                 if (UiScript.playerClass == 3) 
                 {
                     efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
-                    Debug.Log("HABILIDADE SAIU COM EXITO");
                 }
 
                 if (UiScript.playerClass == 2)
                 {
                     efeitosobreI = PlayerScript.singleton.classe.EspecialB(enemy);
-                    Debug.Log("HABILIDADE SAIU COM EXITO");
                 }
 
                 poderE -= 3;
@@ -204,7 +217,7 @@ public class BattleClass : MonoBehaviour
     }
     public void TurnoInimigo()
     {
-        Debug.Log("TURNO DO INIMIGO");
+        Mensagem.Mensagens = "TURNO DO PLAYER";
         if (efeitosobreI == true) //CASO O PLAYER ATIVE O ESPECIAL O INIMIGO VAI VERIFICAR SE A O MISS ACERTOU OU N
         {
             if (UiScript.playerClass == 1)
@@ -278,14 +291,15 @@ public class BattleClass : MonoBehaviour
                 {
                     i -= 1;
                     enemy.vida -= 20;
-                    Debug.Log("INIMIGO TOMOU TORNS" + enemy.vida);
+                    Debug.Log("INIMIGO TOMOU TORNS " + enemy.vida);
                 }
             }
 
             if (UiScript.playerClass == 3) 
             {
-                if (PlayerScript.singleton.classe.forca >= 10) 
+                if (PlayerScript.singleton.classe.vida > 200) 
                 {
+                    PlayerScript.singleton.classe.vidaMax -= 50;
                     PlayerScript.singleton.classe.vida -= 50;
                     PlayerScript.singleton.classe.forca -= 30;
                     PlayerScript.singleton.classe.defesa -= 30;
@@ -350,7 +364,8 @@ public class BattleClass : MonoBehaviour
     {
         if(enemy.vida <= 0)
         {
-            Debug.Log("VOCE VENDEU BLUAHAHAHAH");
+            Debug.Log("VOCE VENCEU BLUAHAHAHAH");
+            GameObject.Destroy(enemyPrefeb);      
             TrocarDeInimigo();
             //PainelDeVitoria.SetActive(true);
         }
@@ -369,9 +384,12 @@ public class BattleClass : MonoBehaviour
         {
             enemyAtual++;
             enemy = enemys[enemyAtual];
-          Debug.Log("UM NOVO INIMIGO SURGIU, SUA VIDA É " + enemy.vida);           
+            enemyPrefeb = Instantiate(enemy.prefab);
+            Debug.Log("UM NOVO INIMIGO SURGIU, SUA VIDA É " + enemy.vida);           
         }
 
     }
+
+
 
 }

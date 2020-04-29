@@ -6,6 +6,7 @@ public abstract class ClasseBase
     public int vida;
     public int forca;
     public int defesa;
+    public int vidaMax;
     public GameObject prefab;
     public abstract bool EspecialB(ClasseBase inimigo);
     public virtual bool Roll(ClasseBase inimigo) 
@@ -27,11 +28,12 @@ public abstract class ClasseBase
 
 public class Ninja : ClasseBase
 {
-    public Ninja(int vida, int forca, int defesa)
+    public Ninja(int vidaMax,int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
     public int Especial()
     {
@@ -69,11 +71,12 @@ public class Ninja : ClasseBase
 
 public class Berserker : ClasseBase
 {
-    public Berserker(int vida, int forca, int defesa)
+    public Berserker(int vidaMax,int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
 
     public override bool EspecialB(ClasseBase inimigo)
@@ -81,6 +84,7 @@ public class Berserker : ClasseBase
         Debug.Log("MODO BERSERKER ATIVADO");
         Debug.Log("DEUS ACIMA DE TODOS BESERKER ACIMA DE TUDOO HA HA HAA");
         vida = 300;
+        vidaMax = 300;
         forca = 70;
         defesa = 70;
         Debug.LogError("ATRIBUTOS ALTOS");
@@ -99,11 +103,12 @@ public class Berserker : ClasseBase
 
 public class Mago : ClasseBase
 {
-    public Mago(int vida, int forca, int defesa)
+    public Mago(int vidaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
@@ -122,11 +127,12 @@ public class Mago : ClasseBase
 public class Golem : ClasseBase
 {
 
-    public Golem(int vida, int forca, int defesa)
+    public Golem(int vidaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
@@ -141,11 +147,12 @@ public class Golem : ClasseBase
 public class Goblin : ClasseBase
 {
 
-    public Goblin(int vida, int forca, int defesa)
+    public Goblin(int vidaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
@@ -160,11 +167,12 @@ public class Goblin : ClasseBase
 public class Dragao : ClasseBase
 {
 
-    public Dragao(int vida, int forca, int defesa)
+    public Dragao(int vidaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
@@ -179,11 +187,12 @@ public class Dragao : ClasseBase
 public class Ogro : ClasseBase
 {
 
-    public Ogro(int vida, int forca, int defesa)
+    public Ogro(int vidaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
@@ -198,11 +207,12 @@ public class Ogro : ClasseBase
 public class Necromancer : ClasseBase
 {
 
-    public Necromancer(int vida, int forca, int defesa)
+    public Necromancer(int vidaMax, int vida, int forca, int defesa)
     {
         this.vida = vida;
         this.forca = forca;
         this.defesa = defesa;
+        this.vidaMax = vidaMax;
     }
     public override bool EspecialB(ClasseBase inimigo)
     {
