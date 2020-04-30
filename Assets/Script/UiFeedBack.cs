@@ -6,26 +6,25 @@ using UnityEngine.UI;
 public class UiFeedBack : MonoBehaviour
 {
 
-    public Text ScoreText;
+    public Text Mensagem;
 
     private string mensagem;
 
-    public string Mensagens
+    public string Mensagens//MENSAGEM FAZ UM GET SET PARA TODA HR ELE RECEBER O VALOR QUE ONTEXT RETORNAR
     {
         get
         {
-            return mensagem;
+            return mensagem;//RETORNA MENSAGEM
         }
 
         set
         {
-            mensagem = value;
-
-            UpdatePointsText();
+            mensagem = value;//MENSAGEM IGUAL AO VALOR
+            OnText();//CHAMA A FUNÇÃO QUE DEIXA A MENSAGEM.TEXT IGUAL A MENSAGEM NA CLASSE QUE ESTÁ SENDO MODIFICADA
         }
     }
-    void UpdatePointsText()
+    void OnText()
     {
-        ScoreText.text = mensagem;
+        Mensagem.text = mensagem;
     }
 }
