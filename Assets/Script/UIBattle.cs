@@ -30,9 +30,9 @@ public class UIBattle : MonoBehaviour
 
     public void AtualizarStatus()
     {
-        vidaE = BattleClass.enemy.vida;
-        vidaCheiaE = BattleClass.enemy.vidaMax;
-        defesaE = BattleClass.enemy.defesa;
+        vidaE = BattleClass.Enemy.vida;
+        vidaCheiaE = BattleClass.Enemy.vidaMax;
+        defesaE = BattleClass.Enemy.defesa;
 
 
 
@@ -55,9 +55,9 @@ public class UIBattle : MonoBehaviour
         vidaImage.rectTransform.sizeDelta = new Vector2(vida / vidaCheia * 159, 20);
 
         vidaText.text = PlayerScript.singleton.classe.vida.ToString() + "/" + PlayerScript.singleton.classe.vidaMax.ToString();      
-        danoEnemyText.text = "dano : " + BattleClass.enemy.forca.ToString();
-        defesaEnemyText.text = "defesa : " + BattleClass.enemy.defesa.ToString();
-        vidaEnemyText.text = BattleClass.enemy.vida.ToString() + "/" + BattleClass.enemy.vidaMax.ToString();
+        danoEnemyText.text = "dano : " + BattleClass.Enemy.forca.ToString();
+        defesaEnemyText.text = "defesa : " + BattleClass.Enemy.defesa.ToString();
+        vidaEnemyText.text = BattleClass.Enemy.vida.ToString() + "/" + BattleClass.Enemy.vidaMax.ToString();
         vidaEnemyImage.rectTransform.sizeDelta = new Vector2(vidaE / vidaCheiaE * 159, 20);
         vidaImage.rectTransform.sizeDelta = new Vector2(vida / vidaCheia * 159, 20);
     }
@@ -65,6 +65,7 @@ public class UIBattle : MonoBehaviour
     public void RecomecarJogo(string cene)
     {
         SceneScript.singleton.LoadScene(cene);
+
     }
 
     public void EscolherBuff(int buff)
@@ -76,11 +77,13 @@ public class UIBattle : MonoBehaviour
         if (buff == 2)
         {
                 PlayerScript.singleton.classe.defesa += 10;
+           
             if (PlayerScript.singleton.classe.defesa >= PlayerScript.singleton.classe.defesaMax) 
             {
+                
                 PlayerScript.singleton.classe.defesa = PlayerScript.singleton.classe.defesaMax;
-                BattleClass.Mensagem.Mensagens = "SUA DEFESA CHEGOU NA DEFESA MAXIMA";
             }
+            BattleClass.valorD = PlayerScript.singleton.classe.defesa;
         }
         if (buff == 3)
         {
@@ -88,8 +91,9 @@ public class UIBattle : MonoBehaviour
             if (PlayerScript.singleton.classe.forca >= PlayerScript.singleton.classe.forcaMax)
             {
                 PlayerScript.singleton.classe.forca = PlayerScript.singleton.classe.forcaMax;
-                BattleClass.Mensagem.Mensagens = "SUA DEFESA CHEGOU NA DEFESA MAXIMA";
             }
+
+            BattleClass.valorF = PlayerScript.singleton.classe.forca;
         }
     }
 

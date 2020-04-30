@@ -41,18 +41,7 @@ public class Ninja : ClasseBase
         this.defesaMax = defesaMax;
         this.forcaMax = forcaMax;
     }
-<<<<<<< Updated upstream
-    public int Especial()
-    {
-        vida += 60;
-        int forcaE = forca + 35;
-        Debug.Log("VIDA RECUPERADA " + vida);
-        return forcaE;
-
-    }
-=======
     
->>>>>>> Stashed changes
     public override void EspecialF(ClasseBase inimigo)
     {
         inimigo.vida -= forca;
