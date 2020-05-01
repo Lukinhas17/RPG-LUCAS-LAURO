@@ -5,14 +5,8 @@ public class UiScript : MonoBehaviour
 {
     public InputField nomeInput;//recebe o nome digitado pelo player
     private bool escolher = false;//escolha da class do player
-    public ClassManager classeManager;
-    public static int playerClass;
-
-    public void GetName() //pega o nome digitado 
-    {
-        //PlayerScript.nomePlayer = nomeInput.text;//o nome digitado pelo nomeinput é convertido em text e depois em string
-        //nomeString recebe o nome convertido
-    }
+    public ClassManager classeManager;//REFERENCIA PARA CLASSE MANAGER
+    public static int playerClass;//CLASSE ESCOLHIDA
 
     public void BottonClass(int op)
     {
@@ -34,21 +28,19 @@ public class UiScript : MonoBehaviour
         }
 
         escolher = true;
-    }
-
-
+    }//RECEBE A CLASSE ESCOLHIDA 
     public void BottonContinuar(string scene)
     {
-        if (nomeInput.textComponent.text.Length != 0 && escolher == true)
+        if (nomeInput.textComponent.text.Length != 0 && escolher == true)//SE O NOME FOR DIGITADO E A ESCOLHA DE CLASS FOR IGUAL A TRUE 
         {
-            PlayerScript.singleton.nomePlayer = nomeInput.textComponent.text;
-            SceneScript.singleton.LoadScene(scene);
+            PlayerScript.singleton.nomePlayer = nomeInput.textComponent.text;//ARMAZENA O NOME DO PLAYER 
+            SceneScript.singleton.LoadScene(scene);//PASSA DE CENA
         }
         else
         {
             return;
         }
-    }
+    }//PASSA PARA AS CENAS 
 
 
 }
