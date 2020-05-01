@@ -39,7 +39,6 @@ public class SceneScript : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Já existe uma instância dessa classe.");
 
             Destroy(gameObject);
         }
